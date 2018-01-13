@@ -11,3 +11,5 @@ virtualenv/
 *.wav
 
 *.iml
+
+snowboy/snowboydecoder.pyc
