@@ -1,8 +1,8 @@
 import json
-import wave
 import pyaudio
 import requests
 from snowboy import snowboydecoder
+import sys
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
@@ -17,35 +17,6 @@ class Recorder:
         pass
 
     def start(self):
-        # p = pyaudio.PyAudio()
-        #
-        # stream = p.open(format=FORMAT,
-        #                 channels=CHANNELS,
-        #                 rate=RATE,
-        #                 input=True,
-        #                 frames_per_buffer=CHUNK)
-        #
-        # print("Recording...")
-        #
-        # frames = []
-        #
-        # for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
-        #     data = stream.read(CHUNK)
-        #     frames.append(data)
-        #
-        # print("Done recording!")
-        #
-        # stream.stop_stream()
-        # stream.close()
-        # p.terminate()
-
-        # wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
-        # wf.setnchannels(CHANNELS)
-        # wf.setsampwidth(2)
-        # wf.setframerate(RATE)
-        # wf.writeframes(b''.join(self.frames))
-        # wf.close()
-
         with open(WAVE_OUTPUT_FILENAME, 'rb') as f:
             audio = f.read()
 
@@ -63,24 +34,32 @@ class Recorder:
         data = json.loads(response.content)
 
         text = data.get('_text')
-        print text
 
         if text:
             words = text.split()
-            with open('output.txt','w') as f:
+            words = filter(lambda a: a != 'dolphin', words)
+            with open('output.txt','a') as f:
                 i = 0
                 while i < len(words):
-                    f.write(' '.join(words[i:i+15]) + '\n')
-                    i = i + 1
+                    f.write(' '.join(words[i:i+20]) + '\n')
+                    i = i + 20
 
+                f.write('\n')
             f.close()
 
 
 if __name__ == '__main__':
+    if len(sys.argv) > 1 and sys.argv[1] == '-c':
+        open('output.txt', 'w').close()
+
     detector = snowboydecoder.HotwordDetector('hotword.pmdl', sensitivity=0.5)
     print('Listening... Press Ctrl+C to exit')
 
     detector.start()
+    detector.terminate()
+
+    detector = snowboydecoder.HotwordDetector('hotword.pmdl', sensitivity=0.5)
+    detector.start(is_recording=True)
     detector.terminate()
 
     recorder = Recorder()

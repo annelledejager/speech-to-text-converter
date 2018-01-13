@@ -10,6 +10,8 @@ import pyaudio
 
 import snowboydetect
 
+import sox
+
 logging.basicConfig()
 logger = logging.getLogger("snowboy")
 logger.setLevel(logging.INFO)
@@ -22,8 +24,11 @@ DETECT_DONG = os.path.join(TOP_DIR, "resources/dong.wav")
 
 class RingBuffer(object):
     """Ring buffer to hold audio from PortAudio"""
-    def __init__(self, size = 4096):
-        self._buf = collections.deque(maxlen=size)
+    def __init__(self, size = None):
+        if size:
+            self._buf = collections.deque(maxlen=size)
+        else:
+            self._buf = collections.deque()
 
     def extend(self, data):
         """Adds data to the end of buffer"""
@@ -78,6 +83,7 @@ class HotwordDetector(object):
 
         def audio_callback(in_data, frame_count, time_info, status):
             self.ring_buffer.extend(in_data)
+            self.ring_buffer_cmp.extend(in_data)
             play_data = chr(0) * len(in_data)
             return play_data, pyaudio.paContinue
 
@@ -115,10 +121,12 @@ class HotwordDetector(object):
             rate=self.detector.SampleRate(),
             frames_per_buffer=2048,
             stream_callback=audio_callback)
+        self.ring_buffer_cmp = RingBuffer()
 
     def start(self, detected_callback=play_audio_file,
               interrupt_check=lambda: False,
-              sleep_time=0.03):
+              sleep_time=0.03,
+              is_recording=False):
         """
         Start the voice detector. For every `sleep_time` second it checks the
         audio buffer for triggering keywords. If detected, then call
@@ -151,7 +159,6 @@ class HotwordDetector(object):
 
         logger.debug("detecting...")
 
-        frames = collections.deque(maxlen=500000)
         while True:
             if interrupt_check():
                 logger.debug("detect voice break")
@@ -160,13 +167,6 @@ class HotwordDetector(object):
             if len(data) == 0:
                 time.sleep(sleep_time)
                 continue
-
-            # this works!
-            # with open('audio.raw','w') as f:
-            #     f.write(data)
-            #
-            # f.close()
-            frames.extend(data)
 
             ans = self.detector.RunDetection(data)
             if ans == -1:
@@ -179,24 +179,20 @@ class HotwordDetector(object):
                 callback = detected_callback[ans-1]
                 if callback is not None:
                     callback()
+
                 break
 
-        with open('audio.raw','w') as f:
-            f.write(frames[0])
+        if is_recording:
+            data = self.ring_buffer_cmp.get()
+            with open('audio.raw','w') as f:
+                f.write(data)
 
-        f.close()
+            f.close()
 
-        # FORMAT = pyaudio.paInt16
-        # CHANNELS = 2
-        # RATE = 44100
-        # WAVE_OUTPUT_FILENAME = "output.wav"
-        #
-        # wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
-        # wf.setnchannels(CHANNELS)
-        # wf.setsampwidth(self.audio.get_sample_size(FORMAT))
-        # wf.setframerate(RATE)
-        # wf.writeframes(b''.join(frames))
-        # wf.close()
+            # create transformer
+            tfm = sox.Transformer()
+            tfm.set_input_format(rate=16000, bits=16, channels=1, encoding='signed-integer')
+            tfm.build('audio.raw', 'output.wav')
 
         logger.debug("finished.")
 

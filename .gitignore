@@ -1,0 +1,13 @@
+*.pyc
+
+virtualenv/
+
+.idea/
+
+*.raw
+
+*.txt
+
+*.wav
+
+*.iml
