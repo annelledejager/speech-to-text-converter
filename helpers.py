@@ -13,6 +13,10 @@ WAVE_OUTPUT_FILENAME = "output.wav"
 URL = 'https://api.wit.ai/speech?v=20170307'
 WIT_ACCESS_TOKEN = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 
+HOT_WORD = 'dolphin'
+
+NUM_OF_CHARS_PER_LINE = 120
+
 
 def convert_speech_to_text(audio):
     headers = {
@@ -26,14 +30,24 @@ def convert_speech_to_text(audio):
     return data.get('_text')
 
 
+def cleanup_text(text):
+    # cleanup commas, full stops and I's
+    text = text.replace('comma', ', ')
+    text = text.replace(' ,', ',')
+    text = text.replace('full stop', '. ')
+    text = text.replace(' .', '.')
+    text = text.replace('i ', 'I ')
+    text = text.replace(HOT_WORD, '')
+    return text
+
+
 def write_text_to_file(text):
-    words = text.split()
-    words = filter(lambda a: a != 'dolphin', words)
+    cleaned_text = cleanup_text(text)
     with open('output.txt','a') as f:
         i = 0
-        while i < len(words):
-            f.write(' '.join(words[i:i+20]) + '\n')
-            i = i + 20
+        while i <= len(cleaned_text):
+            f.write(cleaned_text[i:i+NUM_OF_CHARS_PER_LINE] + '\n')
+            i = i + NUM_OF_CHARS_PER_LINE
 
         f.write('\n')
     f.close()
@@ -48,7 +62,7 @@ def read_audio():
 
 
 def wait_for_hotword():
-    detector = snowboydecoder.HotwordDetector('hotword.pmdl', sensitivity=0.5)
+    detector = snowboydecoder.HotwordDetector('hotword.pmdl', sensitivity=0.6)
     print('Listening... Press Ctrl+C to exit')
 
     detector.start()
@@ -56,6 +70,6 @@ def wait_for_hotword():
 
 
 def start_recording():
-    detector = snowboydecoder.HotwordDetector('hotword.pmdl', sensitivity=0.5)
+    detector = snowboydecoder.HotwordDetector('hotword.pmdl', sensitivity=0.6)
     detector.start(is_recording=True)
     detector.terminate()
