@@ -2,7 +2,7 @@ import sys
 from helpers import read_audio, convert_speech_to_text, write_text_to_file, wait_for_hotword, start_recording
 
 
-class Converter:
+class SpeechToTextConverter:
     def __init__(self):
         pass
 
@@ -30,5 +30,5 @@ if __name__ == '__main__':
     wait_for_hotword()
     start_recording()
 
-    converter = Converter()
+    converter = SpeechToTextConverter()
     converter.convert_speech_to_text()
