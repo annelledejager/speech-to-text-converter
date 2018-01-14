@@ -10,6 +10,15 @@ Clone the repository normally
 git clone git@github.com:annelledejager/speech-to-text-converter.git
 ```
 
+## Setup
+
+Run setup.sh to initialize the virtual environment
+
+```
+cd speech-to-text-converter/
+./setup.sh
+```
+
 ### Prerequisites
 
 * [Pysox](https://github.com/rabitt/pysox) 
@@ -43,9 +52,11 @@ Create an account in order to retrieve a Wit access token.
 
 ### Using the speech converter
 
-The converter waits for the hotword before it starts recording. It then records until the hotword is detected again. After that, it does the conversion from speech to text. 
+The converter waits for the hotword before it starts recording. It then records until the hotword is detected again. After that, it does the conversion from speech to text. In short, hotword-speech-hotword, where only the speech gets converted. 
 
 The output text is written to an output.txt file. It appends the recordings on new lines. Note that the converter recognizes the words 'comma' and 'full stop' and converts them to ',' and '.'.
+
+After activating the virtual environment, run the converter Python script.
 ```
 python speech_to_text_converter.py
 ```
