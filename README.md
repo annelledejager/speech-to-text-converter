@@ -7,7 +7,7 @@ A python client for interacting with Wit Speech Recognition API to convert speec
 Clone the repository normally 
 
 ```
-git clone git@github.com:annelledejager/recorder.git
+git clone git@github.com:annelledejager/speech-to-text-converter.git
 ```
 
 ### Prerequisites
@@ -33,7 +33,7 @@ git clone git@github.com:annelledejager/recorder.git
     ```
 * [Snowboy](http://docs.kitt.ai/snowboy/)
 
-Create a hotword on Snowboy and download its .pmdl file. You can also use an existing one. Replace the[.pmdl](https://github.com/annelledejager/recorder/blob/master/hotword.pmdl) file. 
+Create a hotword on Snowboy and download its .pmdl file. You can also use an existing one. Replace the[.pmdl](https://github.com/annelledejager/speech-to-text-converter/blob/master/hotword.pmdl) file. 
 
 The current hotword used in the project is 'dolphin'.
 
