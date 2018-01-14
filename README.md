@@ -1,87 +1,69 @@
-# recorder
+# speech to text converter
 
-Speach to text converter.
+A python client for interacting with Wit Speech Recognition API to convert speech to text.
 
-## Getting Started
+## Getting the code
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Clone the repository normally 
+
+```
+git clone git@github.com:annelledejager/recorder.git
+```
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+* [Pysox](https://github.com/rabitt/pysox) 
 
+    To install SoX on Mac with Homebrew:
+    
+    ```
+    brew install sox
+    ```
+    
+    To install the most up to date release of this module via PyPi:
+    
+    ```
+    pip install sox
+    ```
+    
+    To install the master branch:
+    
+    ```
+    pip install git+https://github.com/rabitt/pysox.git
+    ```
+* [Snowboy](http://docs.kitt.ai/snowboy/)
+
+Create a hotword on Snowboy and download its .pmdl file. You can also use an existing one. Replace the[.pmdl](https://github.com/annelledejager/recorder/blob/master/hotword.pmdl) file. 
+
+The current hotword used in the project is 'dolphin'.
+
+* [Wit](http://wit.ai/)
+
+Create an account in order to retrieve a Wit access token.
+
+### Using the speech converter
+
+The converter waits for the hotword to start recording. It then records until the hotword is detected again. It then does the conversion from speech to text. 
+
+The output text is written to an output.txt file. It appends the recordings on new lines. 
 ```
-Give examples
+python speech_to_text_converter.py
 ```
-
-### Installing
-
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
-
+The converter allows input flag `-c` to clean the output.txt before the next recording. 
 ```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
+python speech_to_text_converter.py -c  
 ```
 
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+Example output
+```
+Listening... Press Ctrl+C to exit
+INFO:snowboy:Keyword 1 detected at time: 2018-01-14 11:10:28
+INFO:snowboy:Keyword 1 detected at time: 2018-01-14 11:10:38
+Speech converted to text. Please see output.txt.
+```
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [Snowboy](http://docs.kitt.ai/snowboy/) - a Customizable Hotword Detection Engine
+* [Wit](http://wit.ai/) - Natural Language for Developers
 
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc

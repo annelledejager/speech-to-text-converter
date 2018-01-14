@@ -1,4 +1,6 @@
 import sys
+import os
+
 from helpers import read_audio, convert_speech_to_text, write_text_to_file, wait_for_hotword, start_recording
 
 
@@ -17,6 +19,8 @@ class SpeechToTextConverter:
             print('Speech converted to text. Please see output.txt.')
         else:
             print('No speech detected.')
+
+        os.remove('output.wav')
 
 
 def cleanup():

@@ -2,7 +2,6 @@ import json
 import pyaudio
 import requests
 from snowboy import snowboydecoder
-import sys
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
@@ -10,13 +9,14 @@ CHANNELS = 2
 RATE = 44100
 RECORD_SECONDS = 5
 WAVE_OUTPUT_FILENAME = "output.wav"
+
 URL = 'https://api.wit.ai/speech?v=20170307'
-WIT_TOKEN = 'LKGLMVPZYWHUIFT44G3NXTRXCL2JTHAV'
+WIT_ACCESS_TOKEN = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 
 
 def convert_speech_to_text(audio):
     headers = {
-        'Authorization': 'Bearer ' + WIT_TOKEN,
+        'Authorization': 'Bearer ' + WIT_ACCESS_TOKEN,
         'Content-Type': 'audio/wav',
     }
 
