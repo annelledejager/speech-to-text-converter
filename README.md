@@ -43,13 +43,13 @@ Create an account in order to retrieve a Wit access token.
 
 ### Using the speech converter
 
-The converter waits for the hotword to start recording. It then records until the hotword is detected again. It then does the conversion from speech to text. 
+The converter waits for the hotword before it starts recording. It then records until the hotword is detected again. After that, it does the conversion from speech to text. 
 
-The output text is written to an output.txt file. It appends the recordings on new lines. 
+The output text is written to an output.txt file. It appends the recordings on new lines. Note that the converter recognizes the words 'comma' and 'full stop' and converts them to ',' and '.'.
 ```
 python speech_to_text_converter.py
 ```
-The converter allows input flag `-c` to clean the output.txt before the next recording. 
+The converter accepts input flag `-c` to clean the output.txt before the next recording. 
 ```
 python speech_to_text_converter.py -c  
 ```
