@@ -83,7 +83,7 @@ class HotwordDetector(object):
 
         def audio_callback(in_data, frame_count, time_info, status):
             self.ring_buffer.extend(in_data)
-            self.ring_buffer_cmp.extend(in_data)
+            self.ring_buffer_complete.extend(in_data)
             play_data = chr(0) * len(in_data)
             return play_data, pyaudio.paContinue
 
@@ -121,7 +121,11 @@ class HotwordDetector(object):
             rate=self.detector.SampleRate(),
             frames_per_buffer=2048,
             stream_callback=audio_callback)
-        self.ring_buffer_cmp = RingBuffer()
+        self.ring_buffer_complete = RingBuffer()
+
+        # create transformer
+        self.tfm = sox.Transformer()
+        self.tfm.set_input_format(rate=16000, bits=16, channels=1, encoding='signed-integer')
 
     def start(self, detected_callback=play_audio_file,
               interrupt_check=lambda: False,
@@ -179,20 +183,16 @@ class HotwordDetector(object):
                 callback = detected_callback[ans-1]
                 if callback is not None:
                     callback()
-
                 break
 
         if is_recording:
-            data = self.ring_buffer_cmp.get()
+            data = self.ring_buffer_complete.get()
             with open('audio.raw','w') as f:
                 f.write(data)
 
             f.close()
 
-            # create transformer
-            tfm = sox.Transformer()
-            tfm.set_input_format(rate=16000, bits=16, channels=1, encoding='signed-integer')
-            tfm.build('audio.raw', 'output.wav')
+            self.tfm.build('audio.raw', 'output.wav')
 
         logger.debug("finished.")
 
