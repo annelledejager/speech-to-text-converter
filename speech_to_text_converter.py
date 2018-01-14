@@ -12,13 +12,14 @@ class SpeechToTextConverter:
     def convert_speech_to_text():
         audio = read_audio()
 
+        print('Converting...')
         text = convert_speech_to_text(audio)
 
         if text:
             write_text_to_file(text)
-            print('Speech converted to text. Please see output.txt.')
+            print('Speech converted')
         else:
-            print('No speech detected.')
+            print('No speech detected')
 
         os.remove('output.wav')
 

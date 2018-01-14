@@ -62,7 +62,7 @@ def read_audio():
 
 
 def wait_for_hotword():
-    detector = snowboydecoder.HotwordDetector('hotword.pmdl', sensitivity=0.6)
+    detector = snowboydecoder.HotwordDetector('hotword.pmdl', sensitivity=0.5)
     print('Listening... Press Ctrl+C to exit')
 
     detector.start()
@@ -70,6 +70,6 @@ def wait_for_hotword():
 
 
 def start_recording():
-    detector = snowboydecoder.HotwordDetector('hotword.pmdl', sensitivity=0.6)
+    detector = snowboydecoder.HotwordDetector('hotword.pmdl', sensitivity=0.5)
     detector.start(is_recording=True)
     detector.terminate()
