@@ -34,7 +34,7 @@ def cleanup_text(text):
     # cleanup commas, full stops and I's
     text = text.replace('comma', ', ')
     text = text.replace(' ,', ',')
-    text = text.replace('full stop', '. ')
+    text = text.replace('full stop', '.')
     text = text.replace(' .', '.')
     text = text.replace('i ', 'I ')
     text = text.replace(HOT_WORD, '')
