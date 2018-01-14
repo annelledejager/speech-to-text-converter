@@ -68,9 +68,10 @@ python speech_to_text_converter.py -c
 Example output
 ```
 Listening... Press Ctrl+C to exit
-INFO:snowboy:Keyword 1 detected at time: 2018-01-14 11:10:28
-INFO:snowboy:Keyword 1 detected at time: 2018-01-14 11:10:38
-Speech converted to text. Please see output.txt.
+INFO:snowboy:Keyword 1 detected at time: 2018-01-14 15:33:37
+INFO:snowboy:Keyword 1 detected at time: 2018-01-14 15:34:29
+Converting...
+Speech converted
 ```
 
 ## Built With
