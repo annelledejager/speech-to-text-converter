@@ -14,4 +14,4 @@ not_in_env_error() {
 
 python speech_to_text_converter.py
 
-vim output.txt
+vim results/output.txt

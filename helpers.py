@@ -43,7 +43,7 @@ def cleanup_text(text):
 
 def write_text_to_file(text):
     cleaned_text = cleanup_text(text)
-    with open('output.txt','a') as f:
+    with open('results/output.txt','a') as f:
         i = 0
         while i <= len(cleaned_text):
             f.write(cleaned_text[i:i+NUM_OF_CHARS_PER_LINE] + '\n')

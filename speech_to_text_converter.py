@@ -25,7 +25,7 @@ class SpeechToTextConverter:
 
 
 def cleanup():
-    open('output.txt', 'w').close()
+    open('results/output.txt', 'w').close()
 
 
 if __name__ == '__main__':
